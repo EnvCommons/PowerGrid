@@ -4,7 +4,7 @@
 
 ## Description
 
-PowerGrid is a power grid operator environment where agents dispatch generators, manage battery storage, handle renewable variability, and maintain grid frequency across crisis scenarios inspired by the 2021 Texas winter storm, the 2003 Northeast blackout, and the 2016 South Australia blackout.
+PowerGrid is a power grid environment where agents dispatch generators, manage battery storage, handle renewable variability, and maintain grid frequency across crisis scenarios inspired by the 2021 Texas winter storm, the 2003 Northeast blackout, and the 2016 South Australia blackout.
 
 Note: this is a synthetic environment which is majority AI-generated; we recommend testing thoroughly before integrating into an RL pipeline.
 
