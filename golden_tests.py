@@ -524,13 +524,25 @@ class TestRewards:
         r_bad = calc2.step_reward(state_bad)
         assert r_bad < r_good, "Frequency deviation should reduce reward"
 
-    def test_blackout_gives_minus_one(self):
-        """Blackout should give -1.0 reward."""
+    def test_blackout_step_reward_is_zero(self):
+        """The blackout penalty is delivered by terminal_reward, so the step
+        reward at a blackout step must contribute 0.0 (not -1.0) to avoid
+        stacking to -2.0 when the two are summed at the terminal step."""
         calc = RewardCalculator("summer_peak", 5000.0)
         state = self._healthy_state()
         state.blackout = True
         reward = calc.step_reward(state)
-        assert reward == -1.0
+        assert reward == 0.0
+
+    def test_blackout_combined_totals_minus_one(self):
+        """Regression for the double-applied blackout penalty: the combined
+        step + terminal reward at a blackout step must total the documented
+        -1.0 (README), not -2.0. This is the path powergrid.py exercises."""
+        calc = RewardCalculator("summer_peak", 5000.0)
+        state = self._healthy_state()
+        state.blackout = True
+        combined = calc.step_reward(state) + calc.terminal_reward(state)
+        assert combined == -1.0
 
     def test_cost_efficiency_reward(self):
         """Lower cost should give higher reward."""
