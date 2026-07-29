@@ -93,9 +93,14 @@ class RewardCalculator:
 
         # === PENALTIES ===
 
-        # Blackout: catastrophic
+        # Blackout: catastrophic. The -1.0 blackout penalty is delivered ONCE,
+        # by terminal_reward (README: "Terminal reward of -1.0 for total
+        # blackout"). The step contributes 0.0 here so the two do not stack:
+        # blackout is always a terminal step, so powergrid.py sums this step
+        # reward with terminal_reward, and returning -1.0 here as well produced
+        # -2.0 at the terminal blackout step instead of the documented -1.0.
         if state.blackout:
-            reward = -1.0
+            reward = 0.0
             self._track_shed(state, dt_hours)
             self.cumulative_reward += reward
             return reward
